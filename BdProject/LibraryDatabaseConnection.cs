@@ -32,16 +32,18 @@ namespace BdProject
         public string ExecuteTestCommand()
         {
             var command = connection.CreateCommand();
-            command.CommandText = "SELECT nazwa FROM kraje";
-            var reader = command.ExecuteReader();
-
-            var builder = new StringBuilder();
-
-            while (reader.Read())
+            command.CommandText = "SELECT nazwa FROM FILO.kraje";
+            using (var reader = command.ExecuteReader())
             {
-                builder.Append(reader["nazwa"]).Append("\r\n");
+                var builder = new StringBuilder();
+
+                while (reader.Read())
+                {
+                    builder.Append(reader["nazwa"]).Append("\r\n");
+                }
+
+                return builder.ToString();
             }
-            return builder.ToString();
         }
     }
 }
