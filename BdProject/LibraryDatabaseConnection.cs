@@ -20,8 +20,15 @@ namespace BdProject
 
         public LibraryDatabaseConnection()
         {
-            connection = new OracleConnection(Properties.Settings.Default.ConnectionString);
-            connection.Open();
+            try
+            {
+                connection = new OracleConnection(Properties.Settings.Default.ConnectionString);
+                connection.Open();
+            }
+            catch (Exception e)
+            {
+                throw new LibraryDatabaseException(e);
+            }
         }
 
         public void Dispose()
@@ -31,17 +38,25 @@ namespace BdProject
 
         public string ExecuteTestCommand()
         {
-            var command = connection.CreateCommand();
-            command.CommandText = "SELECT nazwa FROM kraje";
-            var reader = command.ExecuteReader();
-
-            var builder = new StringBuilder();
-
-            while (reader.Read())
+            try
             {
-                builder.Append(reader["nazwa"]).Append("\r\n");
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT nazwa FROM kraje";
+                var reader = command.ExecuteReader();
+
+                var builder = new StringBuilder();
+
+                while (reader.Read())
+                {
+                    builder.Append(reader["nazwa"]).Append("\r\n");
+                }
+
+                return builder.ToString();
             }
-            return builder.ToString();
+            catch (Exception e)
+            {
+                throw new LibraryDatabaseException(e);
+            }
         }
     }
 }

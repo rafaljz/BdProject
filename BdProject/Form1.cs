@@ -12,9 +12,16 @@ namespace BdProject
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (var database = new LibraryDatabaseConnection())
+            try
             {
-                textBox1.Text = database.ExecuteTestCommand();
+                using (var database = new LibraryDatabaseConnection())
+                {
+                    textBox1.Text = database.ExecuteTestCommand();
+                }
+            }
+            catch (LibraryDatabaseException)
+            {
+                textBox1.Text = "Wystąpił błąd podczas komunikacji z bazą";
             }
         }
     }
