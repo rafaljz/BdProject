@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
-using Oracle.DataAccess.Client;
 using System.Data.Common;
 using System.Text;
+using Oracle.DataAccess.Client;
 
 namespace BdProject
 {
