@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Windows.Forms;
 
 namespace BdProject
@@ -12,9 +13,20 @@ namespace BdProject
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (var database = new LibraryDatabaseConnection())
+            try
             {
-                textBox1.Text = database.ExecuteTestCommand();
+                using (var database = new LibraryDatabaseConnection())
+                {
+                    textBox1.Text = database.ExecuteTestCommand();
+                }
+            }
+            catch (DbException ex)
+            {
+                var message = string.Format(
+                    "Wystąpił błąd podczas komunikacji z bazą. Typ wyjątku: {0}. Komunikat: {1}", 
+                    ex.GetType().Name,
+                    ex.Message);
+                textBox1.Text = message;
             }
         }
     }
